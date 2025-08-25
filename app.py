@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("📘 Grade Calculator")
+st.title("📚 Grade Calculator")
 
 # Input: Absences
 absences = st.number_input("Number of Absences", min_value=0, step=1)
@@ -33,4 +33,5 @@ st.subheader("📊 Results")
 st.write(f"Prelim Grade: **{round(prelim_grade, 2)}**")
 st.write(f"To pass with 75%: Midterm = **{pass_midterm}**, Final = **{pass_final}**")
 st.write(f"To achieve 90%: Midterm = **{deans_midterm}**, Final = **{deans_final}**")
+
 
