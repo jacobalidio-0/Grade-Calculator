@@ -23,7 +23,7 @@ def set_background(image_path):
         color: #111111;                      /* Set default text color to dark gray */
     }}
 
-    /* 🖋️ Style key text elements for readability */
+    /*  Style key text elements for readability */
     .stMarkdown, .stText, .stTitle, .stSubheader {{
         color: #111111 !important;           /* Force dark text color */
         font-weight: 600 !important;         /* Make text semi-bold */
@@ -41,6 +41,10 @@ image_path = r"C:\Users\Jacob\Downloads\blue-office-stationery-with-copy-space.j
 
 # Apply the background to your Streamlit app
 set_background(image_path)
+
+
+
+
 
 
 # Title of the app
@@ -92,7 +96,3 @@ st.subheader("📊 Results")
 st.write(f"Prelim Grade: **{round(prelim_grade, 2)}**")  # Show calculated prelim grade
 st.write(f"To pass with 75%: Midterm = **{pass_midterm}**, Final = **{pass_final}**")  # Required grades to pass
 st.write(f"To achieve 90%: Midterm = **{deans_midterm}**, Final = **{deans_final}**")  # Required grades for dean's list
-
-
-
-
