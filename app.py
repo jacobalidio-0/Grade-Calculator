@@ -1,4 +1,47 @@
 import streamlit as st  # Import the Streamlit library for building the web app
+import base64
+import os
+
+# Function to set a custom background image using base64 encoding
+def set_background(image_path):
+    # Open the image file in binary mode
+    with open(image_path, "rb") as image_file:
+        # Encode the image to base64 so it can be embedded directly in HTML
+        encoded = base64.b64encode(image_file.read()).decode()
+
+   # Inject custom CSS into the Streamlit app to style the background and text
+    st.markdown(
+    f"""
+    <style>
+    /*  Style the main app container */
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/jpeg;base64,{encoded}");  /* Embed base64 image as background */
+        background-size: cover;              /* Scale image to cover entire container */
+        background-position: center;         /* Center the image */
+        background-repeat: no-repeat;        /* Prevent tiling */
+        background-attachment: fixed;        /* Keep background fixed during scroll */
+        color: #111111;                      /* Set default text color to dark gray */
+    }}
+
+    /* 🖋️ Style key text elements for readability */
+    .stMarkdown, .stText, .stTitle, .stSubheader {{
+        color: #111111 !important;           /* Force dark text color */
+        font-weight: 600 !important;         /* Make text semi-bold */
+        text-shadow: 0px 0px 2px #ffffff;    /* Add subtle white glow for contrast */
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True  # Allow raw HTML/CSS injection into the app
+)
+
+
+# Specify the full path to your local image file
+# Use raw string (r"...") to avoid escape character issues on Windows
+image_path = r"C:\Users\Jacob\Downloads\blue-office-stationery-with-copy-space.jpg"
+
+# Apply the background to your Streamlit app
+set_background(image_path)
+
 
 # Title of the app
 st.title("📚 Grade Calculator")
@@ -49,6 +92,7 @@ st.subheader("📊 Results")
 st.write(f"Prelim Grade: **{round(prelim_grade, 2)}**")  # Show calculated prelim grade
 st.write(f"To pass with 75%: Midterm = **{pass_midterm}**, Final = **{pass_final}**")  # Required grades to pass
 st.write(f"To achieve 90%: Midterm = **{deans_midterm}**, Final = **{deans_final}**")  # Required grades for dean's list
+
 
 
 
