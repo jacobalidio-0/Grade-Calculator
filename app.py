@@ -44,7 +44,7 @@ if absences >= 4:
     st.stop()  # Stop further execution of the app
 
 st.subheader("🎯 Input Your Grades")
-st.caption("💡 Tip: Use manual input for precise decimals like 89.75 or 92.33. Sliders are great for quick estimates.")
+st.caption("💡 Tip: Click the ➕ or ➖ buttons to fine-tune your grade with precise decimal values.")
 
 
 
