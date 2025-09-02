@@ -8,7 +8,7 @@ def get_base64(file_path):
     return base64.b64encode(data).decode()
 
 # Encode your local image
-img_base64 = get_base64(r"C:\Users\Jacob\OneDrive\Desktop\HTML\jacob.jpg")
+img_base64 = get_base64("jacob.jpg")
 
 # Inject CSS with base64 image
 page_bg_img = f"""
