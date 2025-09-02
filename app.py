@@ -43,11 +43,64 @@ if absences >= 4:
     st.error("FAILED due to excessive absences.")  # Display error message
     st.stop()  # Stop further execution of the app
 
-# Slider inputs for different grade components (range: 0 to 100)
-prelim_exam = st.slider("Prelim Exam Grade", 0.0, 100.0)
-quizzes = st.slider("Quizzes Grade", 0.0, 100.0)
-requirements = st.slider("Requirements Grade", 0.0, 100.0)
-recitation = st.slider("Recitation Grade", 0.0, 100.0)
+st.subheader("🎯 Input Your Grades")
+st.caption("💡 Tip: Use manual input for precise decimals like 89.75 or 92.33. Sliders are great for quick estimates.")
+
+
+
+def synced_input(label, key, col_slider, col_input):
+    # Initialize session state
+    if key not in st.session_state:
+        st.session_state[key] = 0.00
+
+    # Create subcolumns for slider + buttons
+    with col_slider:
+        subcol = st.columns([6, 1, 1])  # Slider, ➖, ➕
+
+        # ➖ Button
+        if subcol[1].button("➖", key=f"{key}_minus"):
+            st.session_state[key] = max(0.00, round(st.session_state[key] - 0.01, 2))
+
+        # ➕ Button
+        if subcol[2].button("➕", key=f"{key}_plus"):
+            st.session_state[key] = min(100.00, round(st.session_state[key] + 0.01, 2))
+
+        # Slider synced to session_state[key]
+        slider_val = subcol[0].slider(
+            label,
+            min_value=0.00,
+            max_value=100.00,
+            value=float(st.session_state[key]),
+            step=0.01,
+            format="%.2f",
+            key=f"{key}_slider"
+        )
+
+    # Manual input synced to session_state[key]
+    number_val = col_input.number_input(
+        f"{label} (Manual)",
+        min_value=0.00,
+        max_value=100.00,
+        value=float(st.session_state[key]),
+        step=0.01,
+        format="%.2f",
+        key=f"{key}_input"
+    )
+
+    # Final sync logic
+    if abs(slider_val - st.session_state[key]) > 0.001:
+        st.session_state[key] = slider_val
+    elif abs(number_val - st.session_state[key]) > 0.001:
+        st.session_state[key] = number_val
+
+    return st.session_state[key]
+
+
+col = st.columns(4)
+prelim_exam   = synced_input("Prelim Grade",      "prelim",      col[0], col[0])
+quizzes       = synced_input("Quizzes Grade",     "quizzes",     col[1], col[1])
+requirements  = synced_input("Requirements Grade","requirements",col[2], col[2])
+recitation    = synced_input("Recitation Grade",  "recitation",  col[3], col[3])
 
 # --- Grade Calculations ---
 
@@ -79,4 +132,3 @@ st.subheader("📊 Results")
 st.write(f"Prelim Grade: **{round(prelim_grade, 2)}**")  # Show calculated prelim grade
 st.write(f"To pass with 75%: Midterm = **{pass_midterm}**, Final = **{pass_final}**")  # Required grades to pass
 st.write(f"To achieve 90%: Midterm = **{deans_midterm}**, Final = **{deans_final}**")  # Required grades for dean's list
-
