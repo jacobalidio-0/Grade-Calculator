@@ -1,18 +1,30 @@
 import streamlit as st  # Import the Streamlit library for building the web app
+import base64
 
-# Define custom CSS to set a full-screen background image
-page_bg_img = """
+# Function to convert image to base64
+def get_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+# Encode your local image
+img_base64 = get_base64(r"C:\Users\Jacob\OneDrive\Desktop\HTML\jacob.jpg")
+
+# Inject CSS with base64 image
+page_bg_img = f"""
 <style>
-/* Target the main app container */
-[data-testid="stAppViewContainer"] {
-    background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e");  /* Ocean sunset background from Unsplash */
-    background-size: cover;              /* Scale image to fill the entire container */
-    background-position: center;         /* Center the image within the container */
-    background-repeat: no-repeat;        /* Prevent the image from repeating */
-    background-attachment: fixed;        /* Keep the background fixed during scroll */
-}
+[data-testid="stAppViewContainer"] {{
+    background-image: url("data:image/png;base64,{img_base64}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}}
 </style>
 """
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
 
 # Inject the CSS into the Streamlit app
 st.markdown(page_bg_img, unsafe_allow_html=True)  # Allow raw HTML/CSS for custom styling
