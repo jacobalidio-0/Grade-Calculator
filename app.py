@@ -102,6 +102,34 @@ quizzes       = synced_input("Quizzes Grade",     "quizzes",     col[1], col[1])
 requirements  = synced_input("Requirements Grade","requirements",col[2], col[2])
 recitation    = synced_input("Recitation Grade",  "recitation",  col[3], col[3])
 
+st.subheader("🧪 Input Your Midterm Grades")
+
+midterm_absences = st.number_input("Midterm Absences", min_value=0, step=1)
+midterm_attendance = 100 - (midterm_absences * 10)
+
+col_mid = st.columns(5)
+midterm_exam       = synced_input("Midterm Exam",       "midterm_exam",       col_mid[0], col_mid[0])
+midterm_quizzes    = synced_input("Midterm Quizzes",    "midterm_quizzes",    col_mid[1], col_mid[1])
+midterm_projects   = synced_input("Midterm Projects",   "midterm_projects",   col_mid[2], col_mid[2])
+midterm_recitation = synced_input("Midterm Recitation", "midterm_recitation", col_mid[3], col_mid[3])
+
+
+
+st.subheader("🎓 Input Your Final Grades")
+
+final_absences   = st.number_input("Final Absences", min_value=0, step=1)
+final_attendance   = 100 - (final_absences * 10)
+
+col_final = st.columns(5)
+final_exam       = synced_input("Final Exam",       "final_exam",       col_final[0], col_final[0])
+final_quizzes    = synced_input("Final Quizzes",    "final_quizzes",    col_final[1], col_final[1])
+final_projects   = synced_input("Final Projects",   "final_projects",   col_final[2], col_final[2])
+final_recitation = synced_input("Final Recitation", "final_recitation", col_final[3], col_final[3])
+
+
+
+
+
 # --- Grade Calculations ---
 
 # Attendance grade is reduced by 10 points per absence
@@ -125,6 +153,29 @@ def required_grades(target, prelim):
 pass_midterm, pass_final = required_grades(75, prelim_grade)
 deans_midterm, deans_final = required_grades(90, prelim_grade)
 
+# --- Midterm Grade Calculation ---
+midterm_grade = (
+    0.4 * midterm_exam +
+    0.2 * midterm_quizzes +
+    0.15 * midterm_projects +
+    0.15 * midterm_recitation +  
+    0.1 * midterm_attendance 
+)
+
+
+
+# --- Final Grade Calculation ---
+final_grade = (
+    0.4 * final_exam +
+    0.2 * final_quizzes +
+    0.15 * final_projects +
+    0.15 * final_recitation +
+    0.1 * final_attendance
+)
+
+
+
+
 # --- Output Section ---
 
 # Display results
@@ -132,3 +183,24 @@ st.subheader("📊 Results")
 st.write(f"Prelim Grade: **{round(prelim_grade, 2)}**")  # Show calculated prelim grade
 st.write(f"To pass with 75%: Midterm = **{pass_midterm}**, Final = **{pass_final}**")  # Required grades to pass
 st.write(f"To achieve 90%: Midterm = **{deans_midterm}**, Final = **{deans_final}**")  # Required grades for dean's list
+
+# --- Overall Grade Calculation ---
+overall_grade = (
+    0.2 * prelim_grade +
+    0.3 * midterm_grade +
+    0.5 * final_grade
+)
+
+st.subheader("📊 Final Grade Summary")
+st.write(f"Prelim Grade: **{round(prelim_grade, 2)}**")
+st.write(f"Midterm Grade: **{round(midterm_grade, 2)}**")
+st.write(f"Final Grade: **{round(final_grade, 2)}**")
+st.write(f"Overall Grade: **{round(overall_grade, 2)}**")
+
+# Status
+if overall_grade >= 90:
+    st.success("🎉 Dean's List! Outstanding performance.")
+elif overall_grade >= 75:
+    st.info("✅ You passed the course.")
+else:
+    st.error("❌ You did not meet the passing grade.")
